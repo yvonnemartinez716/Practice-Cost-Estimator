@@ -9,25 +9,19 @@
 
 library(shiny)
 
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-
-    # Sidebar with a slider input for number of bins
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
-        ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-            plotOutput("distPlot")
-        )
+fluidPage(
+  titlePanel("Practice Cost Estimator"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("obs", "Observations:", min = 0, max = 1000, value = 500), 
+      textInput("text", label = h3("CPT"), value = "Enter CPT Code")
+    ),
+    mainPanel(
+      textOutput("greeting")
     )
-))
+  )
+)
+
+  
+#textInput("CPT", "CPT Code"),
+#textOutput("DESCRIPTION")
