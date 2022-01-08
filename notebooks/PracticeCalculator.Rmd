@@ -3,10 +3,18 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+```{r}
+library(tidyverse)
+```
 
 
 ```{r}
 rvu <-read.csv("rvu.csv")
+```
+
+
+```{r}
+rename(rvu, CPT = HCPCS)
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
