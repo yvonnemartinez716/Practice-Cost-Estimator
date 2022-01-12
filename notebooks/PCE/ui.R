@@ -13,8 +13,8 @@ fluidPage(
   titlePanel("Practice Cost Estimator"),
   sidebarLayout(
     sidebarPanel(
-      sliderInput("obs", "Observations:", min = 0, max = 1000, value = 500), 
-      textInput("text", label = h3("CPT"), value = "Enter CPT Code")
+      textInput("CPT", label = h3("Select CPT Code"), value = "CPT"),
+      textInput("text", label = h3("Quantity"), value = "Quantity"),
     ),
     mainPanel(
       textOutput("greeting")
