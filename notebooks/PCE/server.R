@@ -11,11 +11,20 @@ library(shiny)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
+    output$Relative <- renderTable({ 
+      rvutable <- subset(rvu, rvu$CPT ==input$CPTFilter) %>% 
+        mutate(Total = FACILITY.TOTAL * input$num)
+                      })
+    })
 
-    output$greeting <- renderText({ 
-      paste("Description", input$text)
-      })
-})
+
+# Define server logic required to draw a histogram
+#shinyServer(function(input, output) {
+  #output$Relative <- renderTable({ 
+    #rvutable <- subset(rvu, rvu$CPT ==input$CPTFilter) %>% 
+#
+  #})
+#})
 
        
 #shinyServer(function(input, output) {

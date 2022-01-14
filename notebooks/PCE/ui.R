@@ -13,15 +13,14 @@ fluidPage(
   titlePanel("Practice Cost Estimator"),
   sidebarLayout(
     sidebarPanel(
-      textInput("CPT", label = h3("Select CPT Code"), value = "CPT"),
-      textInput("text", label = h3("Quantity"), value = "Quantity"),
-    ),
+      selectizeInput("CPTFilter", label = h3("Select CPT Code 1"), choices = rvu$CPT),
+      numericInput("num", label = h3("Quantity"), value = 1),
+      ),
     mainPanel(
-      textOutput("greeting")
+      tableOutput("Relative")
     )
   )
 )
 
+
   
-#textInput("CPT", "CPT Code"),
-#textOutput("DESCRIPTION")
