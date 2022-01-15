@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(shinydashboard)
 
 fluidPage(
   titlePanel("Practice Cost Estimator"),
@@ -15,6 +16,7 @@ fluidPage(
     sidebarPanel(
       selectizeInput("CPTFilter", label = h3("Select CPT Code 1"), choices = rvu$CPT),
       numericInput("num", label = h3("Quantity"), value = 1),
+      actionButton("addButton", "Add", icon("Add"))
       ),
     mainPanel(
       tableOutput("Relative")
