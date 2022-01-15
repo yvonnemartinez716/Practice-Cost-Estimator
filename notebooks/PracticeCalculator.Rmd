@@ -16,6 +16,13 @@ rvu <-read.csv("rvu.csv")
 ```{r}
 rvu <-rename(rvu, CPT = HCPCS)
 ```
+```{r}
+colnames(rvu) <- c('ID', 'CPT', 'Description', 'Work_RVU', 'Facility_PE_RVU', 'MP_RVU', 'Facility_Total')
+```
+```{r}
+rvu <- subset(rvu, select = -c(ID))
+```
+
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
 
