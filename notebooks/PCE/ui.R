@@ -19,10 +19,11 @@ fluidPage(
       actionButton("addButton", "Add", icon("Add"))
       ),
     mainPanel(
-      tableOutput("Relative")
+      tableOutput("Relative"), 
+      dataTableOutput("display")
     )
   )
 )
-
+#FooterNames 
 
   

@@ -17,36 +17,38 @@ shinyServer(function(input, output) {
     values <-reactiveValues(rvu = (head(rvu,1) %>% 
                               mutate(Total = Facility_Total) %>% 
                               head(0)))
-    output$Relative <- renderTable({ values$rvu
-            })
-      observeEvent(input$addButton,{
+    output$Relative <- renderTable({ values$rvu}, striped = TRUE)
+          
+          observeEvent(input$addButton,{
       rvutable <- subset(rvu, rvu$CPT ==input$CPTFilter) %>% 
         mutate(Total = Facility_Total * input$num)
         values$rvu <-rbind(values$rvu, rvutable)
                               })
-    })
+      sketch <- htmltools::withTags(table(
+           tableHeader(Names), tableFooter(FooterName))
+          )
+          
+          opts <- list(
+            dom = 'Bfrtip', buttons = list('print',list(extend='collection',text='Download',buttons = list('copy','csv','excel','pdf'))),
+            footerCallback = JS(
+              "function( tfoot, data, start, end, display ) {",
+              "var api = this.api(), data;",
+              "$( api.column(6).footer()).html('SubTotal:  '+",
+              "api.column(6).data().reduce( function ( a, b ) {",
+              "return a + b;",
+              "} )",
+              ");",
+              "$( api.column(7).footer()).html('SubTotal: '+",
+              "api.column(7).data().reduce( function ( a, b ) {",
+              "return a + b;",
+              "} )",
+              ");","}")
+          )
+          
+          output$display <- DT::renderDataTable(container = sketch,extensions = 'Buttons',options = opts, rownames= FALSE, {
+          data.frame (values$rvu)})
+          
+              })
 
 
-# Define server logic required to draw a histogram
-#shinyServer(function(input, output) {
-  #output$Relative <- renderTable({ 
-    #rvutable <- subset(rvu, rvu$CPT ==input$CPTFilter) %>% 
-#
-  #})
-#})
-
-       
-#shinyServer(function(input, output) {
-  
-  #output$distPlot <- renderPlot({
-    
-    # generate bins based on input$bins from ui.R
-    #x    <- faithful[, 2]
-    #bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    #hist(x, breaks = bins, col = 'darkgray', border = 'white')
-    
-  #})
-  
-#})
+# values$Data = data.table
