@@ -8,13 +8,22 @@
 #
 
 library(shiny)
+library(shinydashboard)
+library(data.table)
+library(DT)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-    output$Relative <- renderTable({ 
+    values <-reactiveValues(rvu = (head(rvu,1) %>% 
+                              mutate(Total = Facility_Total) %>% 
+                              head(0)))
+    output$Relative <- renderTable({ values$rvu
+            })
+      observeEvent(input$addButton,{
       rvutable <- subset(rvu, rvu$CPT ==input$CPTFilter) %>% 
-        mutate(Total = FACILITY.TOTAL * input$num)
-                      })
+        mutate(Total = Facility_Total * input$num)
+        values$rvu <-rbind(values$rvu, rvutable)
+                              })
     })
 
 
