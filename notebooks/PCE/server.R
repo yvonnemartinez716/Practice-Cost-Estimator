@@ -25,7 +25,7 @@ shinyServer(function(input, output) {
         values$rvu <-rbind(values$rvu, rvutable)
                               })
       sketch <- htmltools::withTags(table(
-           tableHeader(Names), tableFooter(FooterName))
+          tableHeader(Names), tableFooter(FooterName))
           )
           
           opts <- list(
@@ -38,14 +38,14 @@ shinyServer(function(input, output) {
               "return a + b;",
               "} )",
               ");",
-              "$( api.column(7).footer()).html('SubTotal: '+",
+              "$( api.column(7).footer()).html('Total: '+",
               "api.column(7).data().reduce( function ( a, b ) {",
               "return a + b;",
               "} )",
               ");","}")
           )
           
-          output$display <- DT::renderDataTable(container = sketch,extensions = 'Buttons',options = opts, rownames= FALSE, {
+          output$display <- DT::renderDataTable(container = sketch,extensions = 'Buttons',options = opts,{
           data.frame (values$rvu)})
           
               })

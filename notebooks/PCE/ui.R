@@ -8,9 +8,10 @@
 #
 
 library(shiny)
+library(shinythemes)
 library(shinydashboard)
 
-fluidPage(
+fluidPage(theme = shinytheme("cerulean"),
   titlePanel("Practice Cost Estimator"),
   sidebarLayout(
     sidebarPanel(
@@ -24,6 +25,11 @@ fluidPage(
     )
   )
 )
-#FooterNames 
 
+#FooterNames 
+# shinyApp(
+#   ui = tagList(
+#     shinythemes::themeSelector(),
+#     navbarPage(
+#       theme = "cerulean",  
   
