@@ -14,22 +14,20 @@ library(shinydashboard)
 fluidPage(theme = shinytheme("cerulean"),
   titlePanel("Practice Cost Estimator"),
   sidebarLayout(
-    sidebarPanel(
+    sidebarPanel(width = 2,
       selectizeInput("CPTFilter", label = h3("Select CPT Code 1"), choices = rvu$CPT),
       numericInput("num", label = h3("Quantity"), value = 1),
-      actionButton("addButton", "Add", icon("Add"))
+      actionButton("addButton", "Add", icon("Add")),
+      uiOutput("removerow"),
+       
+      actionButton(inputId = "remove", label = "Remove CPT Code")
       ),
     mainPanel(
-      tableOutput("Relative"), 
+      #tableOutput("Relative"), 
       dataTableOutput("display")
     )
   )
 )
 
-#FooterNames 
-# shinyApp(
-#   ui = tagList(
-#     shinythemes::themeSelector(),
-#     navbarPage(
-#       theme = "cerulean",  
+
   

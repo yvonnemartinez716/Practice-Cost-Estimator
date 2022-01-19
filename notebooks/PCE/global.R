@@ -5,8 +5,9 @@ rvu <-rename(rvu, CPT = HCPCS)
 
 colnames(rvu) <- c('ID', 'CPT', 'Description', 'Work_RVU', 'Facility_PE_RVU', 'MP_RVU', 'Facility_Total')
 
-rvu <- subset(rvu, select = -c(ID))
+rvu <- filter(rvu, CPT != "") %>% select(-c(ID))
 
-Names <- c("#", names(rvu), "Total")
+
+Names <- c("#", names(rvu), "QTY","Total")
 
 FooterName <- c(rep("", length(Names)))
