@@ -11,26 +11,27 @@ library(shiny)
 library(shinydashboard)
 library(data.table)
 library(DT)
+library(datasets)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
     values <-reactiveValues(rvu = (head(rvu,1) %>% 
-                              mutate(QTY = 0, Total = Facility_Total) %>% 
+                              mutate(QTY = 0, Total = FacilityTotal) %>% 
                               head(0)))
-    output$Relative <- renderTable({ values$rvu}, striped = TRUE)
+    #output$Relative <- renderTable({ values$rvu}, striped = TRUE)
           
           observeEvent(input$addButton,{
-      rvutable <- subset(rvu, rvu$CPT ==input$CPTFilter) %>% 
-        mutate(QTY = input$num + 0, Total = Facility_Total * input$num)
+      rvutable <- subset(rvu, rvu$HCPS ==input$HCPSFilter) %>% 
+        mutate(QTY = input$num + 0, Total = FacilityTotal * input$num)
         values$rvu <-rbind(values$rvu, rvutable)
                               })
           observeEvent(input$remove,{
-                  values$rvu <-filter(values$rvu, CPT != input$remove_cpt)
+                  values$rvu <-filter(values$rvu, HCPS != input$remove_HCPS)
           })
           
           output$removerow <-renderUI({
-            selectInput(inputId = "remove_cpt", label = "Remove CPT Code",
-                                choices = (values$rvu$CPT))
+            selectInput(inputId = "remove_HCPS", label = "Remove HCPS Code",
+                                choices = (values$rvu$HCPS))
             
                       })
           
@@ -40,7 +41,7 @@ shinyServer(function(input, output,session) {
           )
           
           opts <- list(
-            dom = 'Bfrtip', buttons = list('print',list(extend='collection',text='Download',buttons = list('copy','csv','excel','pdf'))),
+            dom = 'Bfrtip', buttons = list(list(extend='collection',text='Download',buttons = list('copy','csv','excel','pdf'))),
             footerCallback = JS(
               "function( tfoot, data, start, end, display ) {",
               "var api = this.api(), data;",
@@ -63,10 +64,18 @@ shinyServer(function(input, output,session) {
           
           output$display <- DT::renderDataTable(container = sketch,extensions = 'Buttons',options = opts,{
           data.frame (values$rvu)
-   
-})
-})         
-
+         
+          })
+          output$plot <- renderPlot({
+            values$rvu %>%
+              ggplot(aes(x=HCPS, y = Total)) +
+              geom_col()
+})        
+          
+          
+          
+    })
+        
 
 
   

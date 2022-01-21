@@ -10,21 +10,24 @@
 library(shiny)
 library(shinythemes)
 library(shinydashboard)
+library(ggplot2)
 
 fluidPage(theme = shinytheme("cerulean"),
   titlePanel("Practice Cost Estimator"),
   sidebarLayout(
     sidebarPanel(width = 2,
-      selectizeInput("CPTFilter", label = h3("Select CPT Code 1"), choices = rvu$CPT),
+      selectizeInput("HCPSFilter", label = h3("Select HCPS Code"), choices = rvu$HCPS),
       numericInput("num", label = h3("Quantity"), value = 1),
       actionButton("addButton", "Add", icon("Add")),
       uiOutput("removerow"),
        
-      actionButton(inputId = "remove", label = "Remove CPT Code")
+      actionButton(inputId = "remove", label = "Remove HCPS Code")
       ),
     mainPanel(
       #tableOutput("Relative"), 
-      dataTableOutput("display")
+      dataTableOutput("display"),
+      plotOutput("plot")
+      
     )
   )
 )
