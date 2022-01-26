@@ -13,35 +13,36 @@ library(data.table)
 library(DT)
 library(datasets)
 
-# Define server logic required to draw a histogram
+
+
 shinyServer(function(input, output,session) {
   values <-reactiveValues(rvu = (head(rvu,1) %>% 
-                                   mutate(QTY = 0, Total = FacilityTotal) %>% 
+                                   mutate(QTY = 0, Revenue = FacilityTotal) %>% 
                                    head(0)))
   #output$Relative <- renderTable({ values$rvu}, striped = TRUE)
   
   observeEvent(input$addButton,{
-    rvutable <- subset(rvu, rvu$HCPS ==input$HCPSFilter) %>% 
-      mutate(QTY = input$num + 0, Total = FacilityTotal * input$num)
+    rvutable <- subset(rvu, rvu$CPT ==input$CPTFilter) %>% 
+      mutate(QTY = input$num + 0, Revenue = FacilityTotal * input$num *34.6062)
     values$rvu <-rbind(values$rvu, rvutable)
   })
   observeEvent(input$descButton,{
-    rvutable <- subset(rvu, rvu$HCPS ==input$HCPSdesc) %>% 
-    mutate(QTY = input$numdesc + 0, Total = FacilityTotal * input$numdesc)
+    rvutable <- subset(rvu, rvu$CPT ==input$CPTdesc) %>% 
+    mutate(QTY = input$numdesc + 0, Revenue = FacilityTotal * input$numdesc *34.6062)
     values$rvu <-rbind(values$rvu, rvutable)
   })
   
   observeEvent(input$remove,{
-    values$rvu <-filter(values$rvu, HCPS != input$remove_HCPS)
+    values$rvu <-filter(values$rvu, CPT != input$remove_CPT)
   })
   output$SelectHCPScode <- renderUI({
-    selectizeInput("HCPSdesc", label = h3("Select HCPS Code"), choices = subset(rvu, rvu$Description ==input$descFilter)$HCPS)
+    selectizeInput("CPTdesc", label = h3("Select CPT Code"), choices = subset(rvu, rvu$Description ==input$descFilter)$CPT)
     
     
   })
   output$removerow <-renderUI({
-    selectInput(inputId = "remove_HCPS", label = "Remove HCPS Code",
-                choices = (values$rvu$HCPS))
+    selectInput(inputId = "remove_CPT", label = "Remove CPT Code",
+                choices = (values$rvu$CPT))
     
   })
   
@@ -57,7 +58,7 @@ shinyServer(function(input, output,session) {
       "var api = this.api(), data;",
       "$( api.column(6).footer()).html('SubTotal:  '+",
       "api.column(6).data().reduce( function ( a, b ) {",
-      "return (a + b).toFixed(2);",
+      "return a + b;",
       "} )",
       ");",
       "$( api.column(7).footer()).html('QTY Total: '+",
@@ -65,9 +66,9 @@ shinyServer(function(input, output,session) {
       "return a + b;",
       "} )",
       ");",
-      "$( api.column(8).footer()).html('Total: '+",
+      "$( api.column(8).footer()).html('Revenue: '+",
       "api.column(8).data().reduce( function ( a, b ) {",
-      "return (a + b).toFixed(2);",
+      "return a + b;",
       "} )",
       ");","}")
   )
@@ -78,7 +79,7 @@ shinyServer(function(input, output,session) {
   })
   output$plot <- renderPlot({
     values$rvu %>%
-      ggplot(aes(x=HCPS, y = Total)) +
+      ggplot(aes(x=CPT, y = Revenue)) +
       geom_col()
   })        
   

@@ -13,18 +13,18 @@ library(shinydashboard)
 library(ggplot2)
 
 fluidPage(theme = shinytheme("cerulean"),
-          titlePanel("Practice Cost Estimator"),
+          titlePanel("Practice Revenue Estimator"),
           sidebarLayout(
             sidebarPanel(width = 2,
                          radioButtons("radio", label = h3(" "),
-                                      choices = list("Select by HCPS Code" = 1, "Select by Description" = 2), 
+                                      choices = list("Select by CPT Code" = 1, "Select by Description" = 2), 
                                       selected = 1),
-                         conditionalPanel("input.radio == 1", selectizeInput("HCPSFilter", label = h3("Select HCPS Code"), choices = rvu$HCPS),
+                         conditionalPanel("input.radio == 1", selectizeInput("CPTFilter", label = h3("Select CPT Code"), choices = rvu$CPT),
                            numericInput("num", label = h3("Quantity"), value = 1),
                            actionButton("addButton", "Add", icon("Add"))
                          ),
                          conditionalPanel("input.radio == 2",selectizeInput("descFilter", label = h3("Select Description"), choices = rvu$Description),
-                                          uiOutput("SelectHCPScode"),
+                                          uiOutput("SelectCPTcode"),
                                           numericInput("numdesc", label = h3("Quantity"), value = 1),
                                           actionButton("descButton", "Add", icon("Add"))
                                           
@@ -33,7 +33,7 @@ fluidPage(theme = shinytheme("cerulean"),
                          
                                              uiOutput("removerow"),
                          
-                         actionButton(inputId = "remove", label = "Remove HCPS Code")
+                         actionButton(inputId = "remove", label = "Remove CPT Code")
             ),
             mainPanel(
               #tableOutput("Relative"), 
